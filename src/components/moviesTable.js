@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import TableHeader from './common/tableHeader';
-import TableBody from './common/tableBody';
+import Like from './common/like';
+import Table from './common/table';
 
 export default class MoviesTable extends Component {
     columns = [
@@ -8,38 +8,30 @@ export default class MoviesTable extends Component {
         { path: 'genre.name', label: "Genre" },
         { path: 'numberInStock', label: 'Stock' },
         { path: 'dailyRentalRate', label: 'Rate' },
-        { key: 'like' },
-        { key: 'delete' }
+        {
+            key: 'like',
+            content: movie => <Like liked={movie.liked} onClick={() => this.props.onLike(movie)} />
+        },
+        {
+            key: 'delete', content: movie => (
+                <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => this.props.onDelete(movie)}>Delete
+                </button>
+            )
+        }
     ]
 
 
     render() {
-        const { count, showMovies, onLike, onDelete, onSort, sortColumn } = this.props;
+        const { movies, onSort, sortColumn } = this.props;
         return (
-            <React.Fragment>
-                <h3>Showing {count} movies in the database</h3>
-                <table className='table'>
-                    <TableHeader
-                        columns={this.columns}
-                        sortColumn={sortColumn}
-                        onSort={onSort} />
-                    <TableBody
-                        columns={this.columns}
-                        data={showMovies} />
-                    <tbody>
-                        {showMovies.map(movie => (
-                            <tr key={movie._id}>
-                                <td>{movie.title}</td>
-                                <td>{movie.genre.name}</td>
-                                <td>{movie.numberInStock}</td>
-                                <td>{movie.dailyRentalRate}</td>
-                                <td><i className={movie.liked ? 'fa fa-heart' : 'fa fa-heart-o'} onClick={() => onLike(movie)}></i></td>
-                                <td><button className="btn btn-danger btn-sm" onClick={() => onDelete(movie)}>delete</button></td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </React.Fragment>
+            <Table
+                columns={this.columns}
+                data={movies}
+                sortColumn={sortColumn}
+                onSort={onSort}
+            />
         )
     }
 
