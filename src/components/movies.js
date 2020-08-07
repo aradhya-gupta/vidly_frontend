@@ -91,7 +91,7 @@ export default class Movies extends Component {
           />
         </div>
         <div className='col'>
-          <Link to="/movies/new" className="btn btn-primary">
+          <Link to="/movies/new" className="btn m-2 btn-primary">
             New Movie
           </Link>
           <h6>Showing {totalCount} movies in the database</h6>
