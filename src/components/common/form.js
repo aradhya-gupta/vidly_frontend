@@ -8,20 +8,19 @@ export default class Form extends Component {
         errors: {}
     }
     validate = () => {
-        const result = this.schema.validate(this.state.data, { abortEarly: false });
-        console.log(result);
-        if (!result.error) return null;
+        const {error} = Joi.validate(this.state.data, this.schema, { abortEarly: false });
+        if (!error) return null;
 
         const errors = {};
-        for (let item of result.error.details)
+        for (let item of error.details)
             errors[item.path[0]] = item.message;
         return errors;
     }
 
     validateProperty = ({ name, value }) => {
         const obj = { [name]: value };
-        const schema = Joi.object({ [name]: Joi.string().required() });
-        const { error } = schema.validate(obj);
+        const schema = { [name]: this.schema[name] };
+        const { error } = Joi.validate(obj, schema);
         return error ? error.details[0].message : null;
     }
 

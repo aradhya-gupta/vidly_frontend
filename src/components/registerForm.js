@@ -8,11 +8,11 @@ export default class RegisterForm extends Form{
         errors:{}
     }
 
-    schema = Joi.object({
+    schema = {
         username: Joi.string().email().required().label("Username"),
         password: Joi.string().required().min(5).label("Password"),
         name: Joi.string().required().label("Name"),
-    });
+    };
 
     doSubmit = () => {
 
